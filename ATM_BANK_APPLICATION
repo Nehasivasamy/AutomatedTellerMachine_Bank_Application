@@ -153,7 +153,7 @@ public class ATM_BANK_APPLICATION {
         double amount = sc.nextDouble();
         if (amount > 0) {
             Balance += amount;
-            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); // Display time in Indian time zone
+            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss a");
             transactionData.add("Rupees " + amount + " deposited successfully at " + dateTime.format(formatter));
         } else {
@@ -166,7 +166,7 @@ public class ATM_BANK_APPLICATION {
         double amount = sc.nextDouble();
         if (amount > 0 && Balance >= amount) {
             Balance -= amount;
-            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); // Display time in Indian time zone
+            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss a");
             transactionData.add("Rupees " + amount + " withdrawn successfully at " + dateTime.format(formatter));
         } else {
