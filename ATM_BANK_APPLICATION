@@ -1,0 +1,203 @@
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
+
+public class ATM_BANK_APPLICATION {
+    private static Scanner sc = new Scanner(System.in);
+    private static double Balance = 1000;
+    private static int UserPin = 9791; 
+    private static int AdminPin = 8825; 
+    private static List<String> transactionData = new ArrayList<>();
+
+    public static void main(String[] args) {
+        boolean start = true;
+
+        while (start) {
+            System.out.println("Welcome to PVP ATM!");
+            System.out.println("*******************");
+            System.out.println("1) User Login");
+            System.out.println("2) Admin Login");
+            System.out.println("3) Exit");
+            System.out.print("Enter your choice(Eg:1): ");
+
+            int Casechoice = sc.nextInt();
+            switch (Casechoice) {
+                case 1:
+                    UserLogin();
+                    break;
+                case 2:
+                    AdminLogin();
+                    break;
+                case 3:
+                    start = false;
+                    break;
+                default:
+                    System.out.println("Invalid! Enter a correct choice!!");
+            }
+        }
+        System.out.println("Thank you for visiting!");
+    }
+
+    private static void UserLogin() {
+        System.out.print("Enter your four digit PIN : ");
+        int EnteredPin = sc.nextInt();
+        if (EnteredPin == UserPin) {
+            UserMenu();
+        } else {
+            System.out.println("Incorrect PIN.");
+        }
+    }
+
+    private static void AdminLogin() {
+        System.out.print("Enter admin PIN: ");
+        int EnteredPin = sc.nextInt();
+        if (EnteredPin == AdminPin) {
+            AdminMenu();
+        } else {
+            System.out.println("Incorrect PIN.");
+        }
+    }
+
+    private static void UserMenu() {
+        boolean UserRun = true;
+
+        while (UserRun) {
+            System.out.println("User Menu:");
+            System.out.println("******************");
+            System.out.println("1. Check Balance");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Mini Statement");
+            System.out.println("5. Change PIN");
+            System.out.println("6. Return to user login");
+            System.out.println("7. Logout");
+            System.out.println("*******************");
+            System.out.print("Enter your choice(eg:1) ");
+
+            int UserChoice = sc.nextInt();
+            switch (UserChoice) {
+                case 1:
+                    CheckBalance();
+                    break;
+                case 2:
+                    Deposit();
+                    break;
+                case 3:
+                    Withdraw();
+                    break;
+                case 4:
+                    MiniStatement();
+                    break;
+                case 5:
+                    ChangeUserPIN();
+                    break;
+                case 6:
+                    UserLogin();
+                case 7:
+                    UserRun = false;
+                    break;
+                default:
+                    System.out.println("Invalid!Enter a right choice from 1 to 7!!");
+            }
+        }
+    }
+
+    private static void AdminMenu() {
+        boolean AdminRun = true;
+
+        while (AdminRun) {
+            System.out.println("Admin Menu:");
+            System.out.println("1. Check Balance");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Change User PIN");
+            System.out.println("5. Return to Admin login");
+            System.out.println("6. Logout");
+            System.out.print("Enter your choice: ");
+
+            int AdminChoice = sc.nextInt();
+            switch (AdminChoice) {
+                case 1:
+                    CheckBalance();
+                    break;
+                case 2:
+                    Deposit();
+                    break;
+                case 3:
+                    Withdraw();
+                    break;
+                case 4:
+                    ChangeUserPIN();
+                    break;
+                case 5:
+                    UserLogin();
+                    break;
+                case 6:
+                    AdminRun = false;
+                    break;
+                default:
+                    System.out.println("Invalid!Enter a right choice from 1 to 5!!");
+            }
+        }
+    }
+
+    private static void CheckBalance() {
+        System.out.println("Current balance is: " + Balance);
+    }
+
+    private static void Deposit() {
+        System.out.print("Enter amount to deposit: ");
+        double amount = sc.nextDouble();
+        if (amount > 0) {
+            Balance += amount;
+            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); // Display time in Indian time zone
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss a");
+            transactionData.add("Rupees " + amount + " deposited successfully at " + dateTime.format(formatter));
+        } else {
+            System.out.println("Invalid amount");
+        }
+    }
+
+    private static void Withdraw() {
+        System.out.print("Enter amount to withdraw: ");
+        double amount = sc.nextDouble();
+        if (amount > 0 && Balance >= amount) {
+            Balance -= amount;
+            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata")); // Display time in Indian time zone
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss a");
+            transactionData.add("Rupees " + amount + " withdrawn successfully at " + dateTime.format(formatter));
+        } else {
+            System.out.println("Insufficient balance");
+        }
+    }
+
+    private static void MiniStatement() {
+        System.out.println("Mini Statement:");
+        System.out.println("Available balance:" + Balance);
+        for (String transaction : transactionData) {
+            System.out.println(transaction);
+        }
+    }
+
+    private static void ChangeUserPIN() {
+        System.out.print("Enter current user PIN: ");
+        int CurrentPIN = sc.nextInt();
+        if (CurrentPIN == UserPin) {
+            System.out.print("Enter new user PIN: ");
+            int NewPIN = sc.nextInt();
+            System.out.print("Confirm new user PIN: ");
+            int ConfirmPIN = sc.nextInt();
+            if (NewPIN == ConfirmPIN) {
+                UserPin = NewPIN;
+                System.out.println("User PIN number has changed successfully.");
+            } else {
+                System.out.println("Configuration pin mismatching");
+            }
+        } else {
+            System.out.println("Incorrect PIN.");
+        }
+    }
+}
